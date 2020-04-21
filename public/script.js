@@ -1,13 +1,15 @@
+var LOAD_NUM = 4;
+var watcher;
+
 new Vue({
 	el: "#app",
 	data: {
 		total: 0,
-		products: [
-			{ title: "Product 1", id: 1, price: 9.99 },
-			{ title: "Product 2", id: 2, price: 9.99 },
-			{ title: "Product 3", id: 3, price: 9.99 },
-		],
+		products: [],
 		cart: [],
+		search: "dog",
+		lastSearch: "",
+		loading: false,
 	},
 	methods: {
 		addToCart: function (product) {
@@ -41,12 +43,22 @@ new Vue({
 			}
 		},
 		onSubmit: function () {
-			console.log("Search");
+			this.products = [];
+			this.loading = true;
+			var path = "/search?q=".concat(this.search);
+			this.$http.get(path).then((response) => {
+				this.products = response.body;
+				this.lastSearch = this.search;
+				this.loading = false;
+			});
 		},
 	},
 	filters: {
 		currency: function (price) {
 			return "$".concat(price.toFixed(2));
 		},
+	},
+	created: function () {
+		this.onSubmit();
 	},
 });
