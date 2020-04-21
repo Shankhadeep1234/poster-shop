@@ -26,7 +26,8 @@
 		<link rel="stylesheet" type="text/css" href="/public/style.css" />
 	</head>
 	<body>
-		<div id="app">
+		<div id="app" v-cloak>
+			<div id="loading">Loading....</div>
 			<div class="header">
 				<div class="container">
 					<div class="title">
@@ -51,7 +52,7 @@
 						Loading....
 					</div>
 					<div v-else class="search-results">
-						Found {{products.length}} results from search terms
+						Found {{results.length}} results from search terms
 						<em>{{lastSearch}}</em>.
 					</div>
 					<div
@@ -75,6 +76,13 @@
 							>
 								Add to Cart
 							</button>
+						</div>
+					</div>
+					<div id="product-list-bottom">
+						<div
+							v-if="products.length === results.length && results.length > 0"
+						>
+							No more Items
 						</div>
 					</div>
 				</div>
@@ -120,7 +128,7 @@
 			type="text/javascript"
 			src="node_modules/vue-resource/dist/vue-resource.js"
 		></script>
-
+		<script src="node_modules/scrollmonitor/scrollMonitor.js"></script>
 		<script type="text/javascript" src="public/script.js"></script>
 	</body>
 </html>
